@@ -1,5 +1,0 @@
-data/
-*.sqlite3
-*.db
-__pycache__/
-*.pyc

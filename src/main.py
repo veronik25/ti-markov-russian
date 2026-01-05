@@ -6,6 +6,7 @@ def main():
     corpus_dir = Path("corpus")
     max_order = 13
 
+
     init_schema()
 
     overall_counter, conditional_counters = collect_statistics(corpus_dir, max_order)
@@ -32,6 +33,17 @@ def main():
         )
 
     conn.commit()
+    cur.execute("SELECT COUNT(*) FROM freq_overall")
+    print("Символов в БД:", cur.fetchone()[0])
+
+    cur.execute("SELECT order_n, COUNT(*) FROM freq_conditional GROUP BY order_n ORDER BY order_n")
+    print("По порядкам:", dict(cur.fetchall()))
+
+    cur.execute("SELECT COUNT(*) FROM freq_overall")
+    print("Символов:", cur.fetchone()[0])
+
+    cur.execute("SELECT order_n, COUNT(*) FROM freq_conditional GROUP BY order_n")
+    print("Статистика:", dict(cur.fetchall()))
     conn.close()
 
 if __name__ == "__main__":
